@@ -14,21 +14,14 @@ print ('Argument 1:', str(sys.argv[1]))
 def rmv_space(string): 
     return string.replace(" ", "")
 
-#spliting expressions by '=' into two different variables
-p1 = rmv_space((sys.argv[1]).split('=')[0]).lower()
-p2 = rmv_space((sys.argv[1]).split('=')[1]).lower()
-
-#printing both expressions
-print('left expression=' + p1)
-print('right expression=' + p2)
-
 #get the polynomial degree      
-if ( sys.argv[1].find('x^2') == -1):
-    pol_deg = 2
-    print('Polynomial degree: 1')
-else:
-    pol_deg = 1
-    print('Polynomial degree: 2')
+def get_max_deg(poly):
+    if (poly.find('x^2') != -1):
+        return 2
+    elif (poly.find('x^1') != -1):
+        return 1
+    else:
+        return 0
 
 #check if string contain float
 def is_float(term):
@@ -64,16 +57,18 @@ def get_coeff(term,flag):
 def get_coeff_list(exp):
     coeff_list = [0, 0, 0]
     arr = re.split('(\+|-)',exp)
-    print('list of terms : ')
-    print(arr)
+    # print('list of terms : ')
+    # print(arr)
     flag = 0
     for term in arr:
-        if (term == '+'):
+        if (term == ''):
+            continue
+        elif (term == '+'):
             flag = 0
         elif (term == '-'):
             flag = 1
         else:
-            print(get_coeff(term,flag))
+            #print(get_coeff(term,flag))
             if (term.find('x^1') != -1):
                 coeff_list[1] += get_coeff(term,flag)
             elif (term.find('x^2') != -1):
@@ -82,8 +77,63 @@ def get_coeff_list(exp):
                 coeff_list[0] += get_coeff(term,flag)
     return coeff_list
 
+#check if list is null
+def is_null(coeffs):
+    for elem in coeffs:
+        if (elem != 0):
+            return 0
+    return 1
 
-#left expression infos
-print(p1)
-print('coeff list :')
-print(get_coeff_list(p1))
+#coeff lists substraction
+def coeff_sub(coeff1,coeff2):
+    if (is_null(coeff1) and is_null(coeff2)):
+        return (0)
+    elif (is_null(coeff2)):
+        return (coeff1)
+    elif (is_null(coeff1)):
+        return (coeff2)
+    coeff1[0]-=coeff2[0]
+    coeff1[1]-=coeff2[1]
+    coeff1[2]-=coeff2[2]
+    return (coeff1)
+
+#print reduced form
+def print_reduced(coeff):
+    if (is_null(coeff)):
+        sys.stdout.write('0 = 0\n')
+        return
+    if (coeff[2] != 0):
+        if (coeff[2] != 1):
+            sys.stdout.write(str(coeff[2]) + ' * ')
+        sys.stdout.write('X^2')
+        if (coeff[1] != 0 or coeff[0] != 0):
+            sys.stdout.write(' + ')
+    if (coeff[1] != 0):
+        if (coeff[1] != 1):
+            sys.stdout.write(str(coeff[1]) + ' * ')
+        sys.stdout.write('X^1')
+        if (coeff[0] != 0):
+            sys.stdout.write(' + ')
+    if (coeff[0] != 0):
+        sys.stdout.write(str(coeff[2]))
+    sys.stdout.write(' = 0')
+    sys.stdout.write('\n')
+    return
+
+#main entry
+def entry(arg):
+    p1 = rmv_space(arg.split('=')[0]).lower()
+    p2 = rmv_space(arg.split('=')[1]).lower()
+    print('poly max deg')
+    print(get_max_deg(arg))
+    print(p1)
+    print(p2)
+    print('coeff list 1st poly :')
+    print(get_coeff_list(p1))
+    print('coeff list 2nd poly :')
+    print(get_coeff_list(p2))
+    print('coeff reduced form :')
+    print_reduced(coeff_sub(get_coeff_list(p1),get_coeff_list(p2)))
+    return
+
+entry(sys.argv[1])
