@@ -18,7 +18,7 @@ def rmv_space(string):
 def get_max_deg(poly):
     if (poly.find('x^2') != -1):
         return 2
-    elif (poly.find('x^1') != -1):
+    elif (poly.find('x^1') != -1 or poly.find('x') != -1):
         return 1
     else:
         return 0
@@ -68,7 +68,7 @@ def get_coeff_list(exp):
         elif (term == '-'):
             flag = 1
         else:
-            if (term.find('x^1') != -1):
+            if (term.find('x^1') != -1 or term.find('x') != -1):
                 coeff_list[1] += get_coeff(term,flag)
             elif (term.find('x^2') != -1):
                 coeff_list[2] += get_coeff(term,flag)
@@ -127,6 +127,14 @@ def print_reduced(coeff):
     sys.stdout.write('\n')
     return
 
+#solve 1st degree
+def solve1(coeff):
+    return (-coeff[0]/coeff[1])
+
+#calculate discriminant
+def discr(coeff):
+    return (coeff[1]*coeff[1]-4*coeff[2]*coeff[0])
+
 #main entry
 def entry(arg):
     p1 = rmv_space(arg.split('=')[0]).lower()
@@ -140,7 +148,11 @@ def entry(arg):
     print('coeff list 2nd poly :')
     print(get_coeff_list(p2))
     print('coeff reduced form :')
-    print_reduced(coeff_sub(get_coeff_list(p1),get_coeff_list(p2)))
+    final_coeff = coeff_sub(get_coeff_list(p1),get_coeff_list(p2))
+    print_reduced(final_coeff)
+    #print('discriminant')
+    #print(discr(final_coeff))
+    print('X = ' + str(solve1(final_coeff)))
     return
 
 entry(sys.argv[1])
