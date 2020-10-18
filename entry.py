@@ -68,7 +68,6 @@ def get_coeff_list(exp):
         elif (term == '-'):
             flag = 1
         else:
-            #print(get_coeff(term,flag))
             if (term.find('x^1') != -1):
                 coeff_list[1] += get_coeff(term,flag)
             elif (term.find('x^2') != -1):
@@ -103,19 +102,27 @@ def print_reduced(coeff):
         sys.stdout.write('0 = 0\n')
         return
     if (coeff[2] != 0):
+        if (coeff[2] < 0):
+            sys.stdout.write('- ')
         if (coeff[2] != 1):
-            sys.stdout.write(str(coeff[2]) + ' * ')
+            sys.stdout.write(str(abs(coeff[2])) + ' * ')
         sys.stdout.write('X^2')
         if (coeff[1] != 0 or coeff[0] != 0):
-            sys.stdout.write(' + ')
+            if (coeff[1] < 0):
+                sys.stdout.write(' - ')
+            else:
+                sys.stdout.write(' + ')
     if (coeff[1] != 0):
         if (coeff[1] != 1):
-            sys.stdout.write(str(coeff[1]) + ' * ')
+            sys.stdout.write(str(abs(coeff[1])) + ' * ')
         sys.stdout.write('X^1')
         if (coeff[0] != 0):
-            sys.stdout.write(' + ')
+            if (coeff[0] < 0):
+                sys.stdout.write(' - ')
+            else:
+                sys.stdout.write(' + ')
     if (coeff[0] != 0):
-        sys.stdout.write(str(coeff[2]))
+        sys.stdout.write(str(abs(coeff[2])))
     sys.stdout.write(' = 0')
     sys.stdout.write('\n')
     return
