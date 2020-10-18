@@ -115,14 +115,14 @@ def print_reduced(coeff):
     if (coeff[1] != 0):
         if (coeff[1] != 1):
             sys.stdout.write(str(abs(coeff[1])) + ' * ')
-        sys.stdout.write('X^1')
+        sys.stdout.write('X')
         if (coeff[0] != 0):
             if (coeff[0] < 0):
                 sys.stdout.write(' - ')
             else:
                 sys.stdout.write(' + ')
     if (coeff[0] != 0):
-        sys.stdout.write(str(abs(coeff[2])))
+        sys.stdout.write(str(abs(coeff[0])))
     sys.stdout.write(' = 0')
     sys.stdout.write('\n')
     return
@@ -132,7 +132,7 @@ def entry(arg):
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
     print('poly max deg')
-    print(get_max_deg(arg))
+    print(get_max_deg(arg.lower()))
     print(p1)
     print(p2)
     print('coeff list 1st poly :')
