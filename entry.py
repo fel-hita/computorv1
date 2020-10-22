@@ -96,8 +96,8 @@ def get_coeff(term,flag):
 def get_coeff_list(exp):
     coeff_list = [0, 0, 0]
     arr = re.split('(\+|-)',exp)
-    #print('list of terms : ')
-    #print(arr)
+    print('list of terms : ')
+    print(arr)
     flag = 0
     for term in arr:
         if (term == ''):
@@ -130,22 +130,23 @@ def coeff_sub(coeff1,coeff2):
         return (coeff1)
     elif (is_null(coeff1)):
         return (coeff2)
-    coeff1[0]-=coeff2[0]
-    coeff1[1]-=coeff2[1]
-    coeff1[2]-=coeff2[2]
-    return (coeff1)
+    final_coeff = [0,0,0]
+    final_coeff[0]-=coeff1[0] - coeff2[0]
+    final_coeff[1]-=coeff1[1] - coeff2[1]
+    final_coeff[2]-=coeff1[2] - coeff2[2]
+    return (final_coeff)
 
 #print reduced form
 def print_reduced(coeff):
     if (is_null(coeff)):
-        sys.stdout.write('ll the real numbers are solution\n')
+        sys.stdout.write('\u001b[36mll the real numbers are solution\n')
         return
 
     if (coeff[2] != 0):
         if (coeff[2] < 0):
             sys.stdout.write('\u001b[32;1m- ')
         if (coeff[2] != 1):
-            sys.stdout.write('\u001b[32;1m' + str(abs(coeff[2])) + '\u001b[0m * ')
+            sys.stdout.write('\u001b[32;1m' + str(abs(coeff[2])) + '\u001b[37;1m * \u001b[0m')
         sys.stdout.write('\u001b[32;1m X^2 \u001b[0m')
     if (coeff[1] != 0):
         if (coeff[1] < 0):
@@ -155,7 +156,7 @@ def print_reduced(coeff):
                 sys.stdout.write('\u001b[35;1m+ ')
     if (coeff[1] != 0):
         if (coeff[1] != 1):
-            sys.stdout.write('\u001b[35;1m' + str(abs(coeff[1])) + '\u001b[0m * ')
+            sys.stdout.write('\u001b[35;1m' + str(abs(coeff[1])) + '\u001b[37;1m * \u001b[0m')
         sys.stdout.write('\u001b[35;1mX \u001b[0m')
     if (coeff[0] != 0):
         if (coeff[0] < 0):
@@ -182,16 +183,16 @@ def solve1(coeff):
 
 #calculate discriminant
 def disc(coeff):
-    print('disc d = ' + str(my_pow2(coeff[1])-4*coeff[2]*coeff[0]))
+    print('\u001b[36mDiscriminant Δ = \033[0m' + str(my_pow2(coeff[1])-4*coeff[2]*coeff[0]))
     return (my_pow2(coeff[1])-4*coeff[2]*coeff[0])
 
 #solve 2nd degree
 def solve2(coeff):
     d = disc(coeff)
     if (d < 0):
-        print('The equation has no solution in R')
+        print('\u001b[36mThe equation has no solution in R')
     elif (d == 0):
-        print('One solution -b/2a :')
+        print('\u001b[36mOne solution -b/2a :')
         print(-coeff[1]/2*coeff[2])
     else:
         a = coeff[2]
@@ -215,24 +216,36 @@ def entry(arg):
     p2 = rmv_space(arg.split('=')[1]).lower()
     coeff1 = get_coeff_list(p1)
     coeff2 = get_coeff_list(p2)
-    final_coeff = coeff_sub(get_coeff_list(p1),get_coeff_list(p2))
+    print('coeff1')
+    print(coeff1)
+    print('coeff2')
+    print(coeff2)
+    final_coeff = coeff_sub(coeff1,coeff2)
     deg = get_max_deg(final_coeff)
-    if (deg == -1):
-        print('Please input a none-null linear or quadratic polynomial equation')
+    print('p1')
+    print(p1)
+    print('p2')
+    print(p2)
+    if (coeff1 == coeff2):
+        print('\u001b[36mA\033[0mAll the real numbers are solution')
+        return
+    elif (deg == -1):
+        print('\u001b[36mPlease input a none-null linear or quadratic polynomial equation\033[0m')
         return
     elif (deg != 1 and deg != 2):
-        print('Please input a valid linear or quadratic polynomial equation')
+        print('\u001b[36mPlease input a valid linear or quadratic polynomial equation\033[0m')
         return
-    print('polynomial max deg')
-    print(deg)
-    print(p1)
-    print(p2)
-    print('coefficient list for 1st poly :')
+    elif (deg == 1):
+        print('\u001b[36mThe polynom is linear\033[0m')
+    elif (deg == 2):
+        print('\u001b[36mThe polynom is quadratic\033[0m')
+    sys.stdout.write('\u001b[36mCoefficient list for 1st poly : \033[0m')
     print(coeff1)
-    print('coefficient list for 2nd poly :')
+    sys.stdout.write('\u001b[36mCoefficient list for 2nd poly : \033[0m')
     print(coeff2)
-    print('coefficient reduced form :')
+    sys.stdout.write('\u001b[36mCoefficient reduced form : \033[0m')
     print(final_coeff)
+    sys.stdout.write('\u001b[36mPolynomial reduced form : \033[0m')
     print_reduced(final_coeff)
     #print('discriminant')
     #print(disc(final_coeff))
