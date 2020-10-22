@@ -210,8 +210,24 @@ def solve2(coeff):
         print('\u001b[33m X2 = ' + str(sol) +'\033[0m')
     return
 
+#error syntax managing
+def err_syn(arg):
+    flag_sign = 0
+    flag_mp = 0
+    flag_eq = 0
+    flag_nbr = 0
+    if (arg == ''):
+        return (0)
+    for char in arg:
+        if (char == ' '):
+            continue
+        elif (char == '-' or char == '+'):
+            flag_sign++
+    return (1)
+
 #main entry
 def entry(arg):
+
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
     coeff1 = get_coeff_list(p1)
