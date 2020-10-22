@@ -16,6 +16,31 @@ print ('Argument 1:', str(sys.argv[1]))
 def rmv_space(string): 
     return string.replace(" ", "")
 
+def my_min(a,b):
+    if (a>=b):
+        return a
+    return b
+
+def my_max(a,b):
+    if (a>=b):
+        return a
+    return b
+
+def my_sqrt(n):
+    sgn = 0
+    if n < 0:
+        sgn = -1
+        n = -n
+    val = n
+    while True:
+        last = val
+        val = (val + n / val) * 0.5
+        if abs(val - last) < 1e-9:
+            break
+    if sgn < 0:
+        return complex(0, val)
+    return val
+
 def my_abs(nbr):
     if (nbr == 0):
         return (0)
@@ -29,7 +54,7 @@ def my_pow2(nbr):
 #get the polynomial degree      
 def get_max_deg(coeff):
     if (coeff[0] == 0 and coeff[1] == 0 and coeff[2] == 0):
-        return (0)
+        return (-1)
     elif (coeff[2] != 0):
         return (2)
     elif (coeff[1] != 0):
@@ -100,7 +125,7 @@ def is_null(coeffs):
 #coeff lists substraction
 def coeff_sub(coeff1,coeff2):
     if (is_null(coeff1) and is_null(coeff2)):
-        return (0)
+        return ([0,0,0])
     elif (is_null(coeff2)):
         return (coeff1)
     elif (is_null(coeff1)):
@@ -118,28 +143,28 @@ def print_reduced(coeff):
 
     if (coeff[2] != 0):
         if (coeff[2] < 0):
-            sys.stdout.write('- ')
+            sys.stdout.write('\u001b[32;1m- ')
         if (coeff[2] != 1):
-            sys.stdout.write(str(abs(coeff[2])) + ' * ')
-        sys.stdout.write('X^2 ')
+            sys.stdout.write('\u001b[32;1m' + str(abs(coeff[2])) + '\u001b[0m * ')
+        sys.stdout.write('\u001b[32;1m X^2 \u001b[0m')
     if (coeff[1] != 0):
         if (coeff[1] < 0):
-            sys.stdout.write('- ')
+            sys.stdout.write('\u001b[35;1m- ')
         else:
             if (coeff[2] != 0):
-                sys.stdout.write('+ ')
+                sys.stdout.write('\u001b[35;1m+ ')
     if (coeff[1] != 0):
         if (coeff[1] != 1):
-            sys.stdout.write(str(abs(coeff[1])) + ' * ')
-        sys.stdout.write('X ')
+            sys.stdout.write('\u001b[35;1m' + str(abs(coeff[1])) + '\u001b[0m * ')
+        sys.stdout.write('\u001b[35;1mX \u001b[0m')
     if (coeff[0] != 0):
         if (coeff[0] < 0):
             sys.stdout.write('- ')
         else:
             sys.stdout.write('+ ')
     if (coeff[0] != 0):
-        sys.stdout.write(str(abs(coeff[0])) + ' ')
-    sys.stdout.write('= 0')
+        sys.stdout.write('\u001b[34;1m' + str(abs(coeff[0])) + ' \u001b[0m')
+    sys.stdout.write('\u001b[37;1m= 0\u001b[0m')
     sys.stdout.write('\n')
     return
 
@@ -174,16 +199,14 @@ def solve2(coeff):
         c = coeff[0]
         print('a = ' + str(a) + ' b = ' + str(b) + ' c = ' + str(c))
         discr = my_pow2(b)-4*a*c
-        print('Two solutions :')
-        print('solution 1 : ')
-        temp1=-b+math.sqrt(discr)
+        print('\u001b[36m Two solutions : \033[0m')
+        temp1=-b+my_sqrt(discr)
         temp2=2*a
         sol=temp1/temp2
-        print(sol)
-        print('solution 2 : ')
-        temp1=-b-math.sqrt(discr)
+        print('\u001b[31m X1 = ' + str(sol) +'\033[0m')
+        temp1=-b-my_sqrt(discr)
         sol=temp1/temp2
-        print(sol)
+        print('\u001b[33m X2 = ' + str(sol) +'\033[0m')
     return
 
 #main entry
@@ -194,18 +217,21 @@ def entry(arg):
     coeff2 = get_coeff_list(p2)
     final_coeff = coeff_sub(get_coeff_list(p1),get_coeff_list(p2))
     deg = get_max_deg(final_coeff)
-    if (deg != 1 and deg != 2):
+    if (deg == -1):
+        print('Please input a none-null linear or quadratic polynomial equation')
+        return
+    elif (deg != 1 and deg != 2):
         print('Please input a valid linear or quadratic polynomial equation')
         return
-    print('poly max deg')
+    print('polynomial max deg')
     print(deg)
     print(p1)
     print(p2)
-    print('coeff list 1st poly :')
+    print('coefficient list for 1st poly :')
     print(coeff1)
-    print('coeff list 2nd poly :')
+    print('coefficient list for 2nd poly :')
     print(coeff2)
-    print('coeff reduced form :')
+    print('coefficient reduced form :')
     print(final_coeff)
     print_reduced(final_coeff)
     #print('discriminant')
