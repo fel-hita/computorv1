@@ -35,7 +35,7 @@ def my_sqrt(n):
     while True:
         last = val
         val = (val + n / val) * 0.5
-        if abs(val - last) < 1e-9:
+        if my_abs(val - last) < 1e-9:
             break
     if sgn < 0:
         return complex(0, val)
@@ -210,24 +210,108 @@ def solve2(coeff):
         print('\u001b[33m X2 = ' + str(sol) +'\033[0m')
     return
 
-#error syntax managing
-def err_syn(arg):
-    flag_sign = 0
-    flag_mp = 0
-    flag_eq = 0
-    flag_nbr = 0
-    if (arg == ''):
-        return (0)
-    for char in arg:
-        if (char == ' '):
+#valid chars for syntax
+def valid_chars(str):
+    valid = "0123456789x^+-=*."
+    for char in str:
+        if (char in valid):
             continue
-        elif (char == '-' or char == '+'):
-            flag_sign++
+        else:
+            return (0)
     return (1)
+
+#error syntax
+def err_syn(arg):
+   flag_sign = 0
+   flag_frac = 1
+   flag_mp = 0
+   flag_x = 0
+   flag_exp = 0
+   flag_nbr = 0
+   flag_eq = 0
+
+   if(valid_chars(arg) == 0):
+        return (1)
+   for char in arg:
+    sys.stdout.write(char)
+    if(char == '+' or char == '-'):
+        flag_eq = 0
+        if(flag_sign == 1):
+            return (2)
+        flag_x = 0
+        flag_sign = 1
+        flag_nbr = 0
+        flag_frac = 1
+        continue
+    elif(char == '*'):
+        flag_eq = 0
+        if (flag_mp == 1 or flag_frac == 1):
+            return (3)
+        flag_mp = 1
+        flag_sign = 0
+        continue
+    elif(char == 'x'):
+        flag_eq = 0
+        if(flag_x == 1):
+            return(4)
+        flag_x = 1
+        flag_sign = 0
+        flag_mp = 0
+        flag_nbr = 1
+        flag_frac = 1
+        continue
+    elif(char == '^'):
+        flag_eq = 0
+        if(flag_x == 0):
+            return(5)
+        flag_frac = 1
+        flag_exp = 1
+        flag_nbr = 1
+        flag_sign = 0
+        continue
+    elif(char.isnumeric()):
+        flag_eq = 0
+        if(flag_exp == 1):
+            if(char != '0' and char != '1' and char != '2'):
+                return(10)
+            flag_exp = 0
+            flag_nbr = 1
+            flag_sign = 0
+            continue
+        else:
+            flag_frac = 0
+            flag_mp = 0
+            if(flag_sign == 1):
+                flag_sign = 0
+                flag_nbr = 0
+                continue
+            elif(flag_nbr == 1):
+                return(6)
+        continue
+    elif(char == '='):
+        if(flag_eq == 1):
+            return(7)
+        flag_frac = 1
+        flag_x = 0
+        flag_nbr = 0
+        flag_eq = 1
+        continue
+    elif(char == '.'):
+        if(flag_frac == 1 or flag_mp == 1):
+            return(8)
+        flag_frac = 1
+        flag_sign = 0
+        continue
+   if(flag_exp == 1 or flag_sign == 1 or flag_mp == 1):
+    print('\n' + str(flag_exp) + str(flag_frac) + str(flag_sign) + str(flag_mp) )
+    return(9)
+   return(0)
+
 
 #main entry
 def entry(arg):
-
+    print('\n = ' + str(err_syn(rmv_space(arg).lower())))
+    return
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
     coeff1 = get_coeff_list(p1)
@@ -263,18 +347,11 @@ def entry(arg):
     print(final_coeff)
     sys.stdout.write('\u001b[36mPolynomial reduced form : \033[0m')
     print_reduced(final_coeff)
-    #print('discriminant')
-    #print(disc(final_coeff))
     if (deg == 1):
         solve1(final_coeff)
     elif (deg == 2):
         solve2(final_coeff)
-    # if (deg == '0'):
-    #     print('\033[31m' + 'X\033[0m = 0')
-    #     return
-    # else:
-    #     print('\033[31m' + 'X\033[0m' + ' = \u001b[33m' + res)
-    #     return
     return
+
 
 entry(sys.argv[1])
