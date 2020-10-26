@@ -107,10 +107,14 @@ def get_coeff_list(exp):
         elif (term == '-'):
             flag = 1
         else:
-            if (term.find('x^1') != -1):
-                coeff_list[1] += get_coeff(term,flag)
-            elif (term.find('x^2') != -1):
+            if (term.find('x^2') != -1):
                 coeff_list[2] += get_coeff(term,flag)
+            elif (term.find('x^1') != -1):
+                coeff_list[1] += get_coeff(term,flag)
+            elif (term.find('x^0') != -1):
+                coeff_list[0] += get_coeff(term,flag)
+            elif (term.find('x') != -1):
+                coeff_list[1] += get_coeff(term,flag)
             else:
                 coeff_list[0] += get_coeff(term,flag)
     return coeff_list
@@ -311,7 +315,6 @@ def err_syn(arg):
 #main entry
 def entry(arg):
     print('\n = ' + str(err_syn(rmv_space(arg).lower())))
-    return
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
     coeff1 = get_coeff_list(p1)
@@ -321,7 +324,11 @@ def entry(arg):
     print('coeff2')
     print(coeff2)
     final_coeff = coeff_sub(coeff1,coeff2)
+    print('final coeff')
+    print(final_coeff)
     deg = get_max_deg(final_coeff)
+    print('deg')
+    print(deg)
     print('p1')
     print(p1)
     print('p2')
