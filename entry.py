@@ -96,8 +96,8 @@ def get_coeff(term,flag):
 def get_coeff_list(exp):
     coeff_list = [0, 0, 0]
     arr = re.split('(\+|-)',exp)
-    print('list of terms : ')
-    print(arr)
+    # print('list of terms : ')
+    # print(arr)
     flag = 0
     for term in arr:
         if (term == ''):
@@ -235,7 +235,7 @@ def err_syn(arg):
    if(valid_chars(arg) == 0):
         return (1)
    for char in arg:
-    sys.stdout.write(char)
+    #sys.stdout.write(char)
     if(char == '+' or char == '-'):
         flag_eq = 0
         if(flag_sign == 1):
@@ -304,36 +304,36 @@ def err_syn(arg):
         flag_frac = 1
         flag_sign = 0
         continue
-   if(flag_exp == 1 or flag_sign == 1 or flag_mp == 1):
-    print('\n' + str(flag_exp) + str(flag_frac) + str(flag_sign) + str(flag_mp) )
+#    if(flag_exp == 1 or flag_sign == 1 or flag_mp == 1):
+#     print('\n' + str(flag_exp) + str(flag_frac) + str(flag_sign) + str(flag_mp) )
     return(9)
    return(0)
 
 
 #main entry
 def entry(arg):
-    sys.stdout.write('\nError No = ' + str(err_syn(rmv_space(arg).lower())) + '\n')
-    if(err_syn(rmv_space(arg).lower()) != 0):
-        print('\u001b[36m\nInvalid syntax !\033[0m')
+    err = err_syn(rmv_space(arg).lower())
+    if(err != 0):
+        print('\u001b[36m\nInvalid syntax - Error Nº: \u001b[31m' + str(err) + '\033[0m')
         return
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
     coeff1 = get_coeff_list(p1)
     coeff2 = get_coeff_list(p2)
-    print('coeff1')
-    print(coeff1)
-    print('coeff2')
-    print(coeff2)
+    # print('coeff1')
+    # print(coeff1)
+    # print('coeff2')
+    # print(coeff2)
     final_coeff = coeff_sub(coeff1,coeff2)
-    print('final coeff')
-    print(final_coeff)
+    # print('final coeff')
+    # print(final_coeff)
     deg = get_max_deg(final_coeff)
-    print('deg')
-    print(deg)
-    print('p1')
-    print(p1)
-    print('p2')
-    print(p2)
+    # print('deg')
+    # print(deg)
+    # print('p1')
+    # print(p1)
+    # print('p2')
+    # print(p2)
     if (coeff1 == coeff2):
         print('\u001b[36mAll the real numbers are solution\033[0m')
         return
