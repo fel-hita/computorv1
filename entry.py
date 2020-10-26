@@ -173,16 +173,12 @@ def print_reduced(coeff):
     sys.stdout.write('\n')
     return
 
-#solve 0
-def solve0(coeff):
-    return
-
 #solve 1st degree
 def solve1(coeff):
     res = -coeff[0]/coeff[1]
-    if (res == 0):
-        return (0)
-    print('X = ' + str(res))
+    if (coeff[1] != 0):
+        print('\u001b[36mOne solution : \033[0m')
+        print('\u001b[31m X = ' + str(res) +'\033[0m')
     return
 
 #calculate discriminant
@@ -234,6 +230,8 @@ def err_syn(arg):
    flag_nbr = 0
    flag_eq = 0
 
+   if(arg[0] == '='):
+        return (1)
    if(valid_chars(arg) == 0):
         return (1)
    for char in arg:
@@ -314,7 +312,10 @@ def err_syn(arg):
 
 #main entry
 def entry(arg):
-    print('\n = ' + str(err_syn(rmv_space(arg).lower())))
+    sys.stdout.write('\nError No = ' + str(err_syn(rmv_space(arg).lower())) + '\n')
+    if(err_syn(rmv_space(arg).lower()) != 0):
+        print('\u001b[36m\nInvalid syntax !\033[0m')
+        return
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
     coeff1 = get_coeff_list(p1)
@@ -334,7 +335,7 @@ def entry(arg):
     print('p2')
     print(p2)
     if (coeff1 == coeff2):
-        print('\u001b[36mA\033[0mAll the real numbers are solution')
+        print('\u001b[36mAll the real numbers are solution\033[0m')
         return
     elif (deg == -1):
         print('\u001b[36mPlease input a none-null linear or quadratic polynomial equation\033[0m')
