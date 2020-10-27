@@ -174,20 +174,20 @@ def print_reduced(coeff):
     sys.stdout.write('\n')
     return
 
-#solve 1st degree
-def solve1(coeff):
-    res = -coeff[0]/coeff[1]
-    if (coeff[1] != 0):
-        print('\u001b[36mOne solution : \033[0m')
-        if(res == 0):
-            res = 0.0
-        print('\u001b[31m X = ' + str(res) +'\033[0m')
-    return
-
 #calculate discriminant
 def disc(coeff):
     print('\u001b[36mDiscriminant Δ = \033[0m' + str(my_pow2(coeff[1])-4*coeff[2]*coeff[0]))
     return (my_pow2(coeff[1])-4*coeff[2]*coeff[0])
+
+#solve 1st degree
+def solve1(coeff):
+    res = -coeff[0]/coeff[1]
+    if (coeff[1] != 0):
+        print('\u001b[36m One solution : \033[0m')
+        if(res == 0):
+            res = 0.0
+        print('\u001b[31m X = ' + str(res) +'\033[0m')
+    return
 
 #solve 2nd degree
 def solve2(coeff):
@@ -195,33 +195,27 @@ def solve2(coeff):
     if (d < 0):
         print('\u001b[36mThe equation has no solution in R')
     elif (d == 0):
-        print('\u001b[36mOne solution -b/2a :')
-        print(-coeff[1]/2*coeff[2])
+        a = coeff[2]
+        b = coeff[1]
+        print('a = ' + str(a) + ' b = ' + str(b))
+        print('\u001b[36m One solution \u001b[33m-b/2a \033[0m:')
+        sol = -coeff[1]/2*coeff[2]
+        print('\u001b[33m X = ' + str(sol) +'\033[0m')
     else:
         a = coeff[2]
         b = coeff[1]
         c = coeff[0]
         print('a = ' + str(a) + ' b = ' + str(b) + ' c = ' + str(c))
         discr = my_pow2(b)-4*a*c
-        print('\u001b[36m Two solutions : \033[0m')
+        print('\u001b[36m Two solutions \u001b[33mX1\033[0m,\u001b[31mX2 \033[0m: ')
         temp1=-b+my_sqrt(discr)
         temp2=2*a
         sol=temp1/temp2
-        print('\u001b[31m X1 = ' + str(sol) +'\033[0m')
+        print('\u001b[33m X1 = ' + str(sol) +'\033[0m')
         temp1=-b-my_sqrt(discr)
         sol=temp1/temp2
-        print('\u001b[33m X2 = ' + str(sol) +'\033[0m')
+        print('\u001b[31m X2 = ' + str(sol) +'\033[0m')
     return
-
-#valid chars for syntax
-def valid_chars(str):
-    valid = "0123456789x^+-=*."
-    for char in str:
-        if (char in valid):
-            continue
-        else:
-            return (0)
-    return (1)
 
 #error syntax
 def err_syn(arg):
@@ -236,11 +230,7 @@ def err_syn(arg):
     flag_nbr = 0
     flag_eq = 1
 
-#    if(arg[0] == '='):
-#         return (1)
-    
-    if(valid_chars(arg) == 0):
-        return (1)
+    sys.stdout.write('\nInput : ')
     for char in arg:
     #sys.stdout.write(char)
     # if (char.isnumeric() == False and flag_frac == 0):
@@ -333,20 +323,23 @@ def err_syn(arg):
                 flag_frac = 1
                 flag_sign = 0
                 sys.stdout.write(char)
+        else:
+            sys.stdout.write('\u001b[31m' + char + '\033[0m')
+            err += 1
         last_char = char
         
     if (last_char == '=' or last_char == '+' or last_char == '-'):
-        err += 1
-        sys.stdout.write('\nInvalid end of polynom.\n')
-        return(err)
-    elif (err > 0):
+        if (err == 0):
+            err += 1
+        sys.stdout.write('\nInvalid \u001b[31mend\033[0m of polynom.\n')
+    if (err > 0):
         sys.stdout.write('\nPlease fix the highlighted \u001b[31m' + str(err))
         if (err == 1):
             sys.stdout.write('\033[0m error.\n')
         else:
             sys.stdout.write('\033[0m errors.\n')
     else:
-        sys.stdout.write('\n\u001b[32mYour input is valid.\033[0m\n')
+        sys.stdout.write('\nYour input syntax is\u001b[32m valid.\033[0m\n')
     return(err)
 
 
@@ -354,7 +347,7 @@ def err_syn(arg):
 def entry(arg):
     err = err_syn(rmv_space(arg).lower())
     if(err != 0):
-        print('\u001b[36m\nInvalid syntax - Error Nº: \u001b[31m' + str(err) + '\033[0m')
+        #print('\u001b[36m\nInvalid syntax - Error Nº: \u001b[31m' + str(err) + '\033[0m')
         return
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
@@ -378,10 +371,10 @@ def entry(arg):
         print('\u001b[36mAll the real numbers are solution\033[0m')
         return
     elif (deg == -1):
-        print('\u001b[36mPlease input a none-null linear or quadratic polynomial equation\033[0m')
+        print('\u001b[36mBut please input a none-null linear or quadratic polynomial equation\033[0m')
         return
     elif (deg != 1 and deg != 2):
-        print('\u001b[36mPlease input a valid linear or quadratic polynomial equation\033[0m')
+        print('\u001b[36mBut please input a valid linear or quadratic polynomial equation\033[0m')
         return
     elif (deg == 1):
         print('\u001b[36mThe polynom is linear\033[0m')
