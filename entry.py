@@ -5,6 +5,7 @@ import array as arr
 
 #exit if number of inline arguments is different than 1, or the polynomial expression does not contain a "="
 if (len(sys.argv) != 2 or sys.argv[1].find('=') == -1):
+    print('Please write down a valid and only one polynomial argument.')
     sys.exit()
 
 #printing arguments infos
@@ -224,6 +225,7 @@ def valid_chars(str):
 
 #error syntax
 def err_syn(arg):
+    err = 0
     last_char = ''
     flag_can_frac = 1
     flag_sign = 0
@@ -245,42 +247,57 @@ def err_syn(arg):
     #     sys.stdout.write('at:'+char)
     #     return (88)
         if(char == '+' or char == '-'):
-            flag_can_frac = 1
-            flag_eq = 1
             if(flag_sign == 1 or flag_exp == 1):
-                return (2)
-            flag_x = 0
-            flag_sign = 1
-            flag_nbr = 0
-            flag_frac = 1
+                sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err += 1
+            else:
+                flag_can_frac = 1
+                flag_eq = 1
+                flag_x = 0
+                flag_sign = 1
+                flag_nbr = 0
+                flag_frac = 1
+                sys.stdout.write(char)
         elif(char == '*'):
-            flag_eq = 1
             if (flag_mp == 1 or flag_frac == 1):
-                return (3)
-            flag_mp = 1
-            flag_sign = 0
+                sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err += 1
+            else:
+                flag_eq = 1
+                flag_mp = 1
+                flag_sign = 0
+                sys.stdout.write(char)
         elif(char == 'x'):
-            flag_eq = 0
             if(flag_x == 1):
-                return(4)
-            flag_x = 1
-            flag_sign = 0
-            flag_mp = 0
-            flag_nbr = 1
-            flag_frac = 1
+                sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err += 1
+            else:
+                flag_eq = 0
+                flag_x = 1
+                flag_sign = 0
+                flag_mp = 0
+                flag_nbr = 1
+                flag_frac = 1
+                sys.stdout.write(char)
         elif(char == '^'):
-            flag_eq = 0
             if(flag_x == 0):
-                return(5)
-            flag_frac = 1
-            flag_exp = 1
-            flag_nbr = 1
-            flag_sign = 0
+                sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err += 1
+            else:
+                flag_eq = 0
+                flag_frac = 1
+                flag_exp = 1
+                flag_nbr = 1
+                flag_sign = 0
+                sys.stdout.write(char)
         elif(char.isnumeric()):
             flag_eq = 0
             if(flag_exp == 1):
                 if(char != '0' and char != '1' and char != '2'):
-                    return(10)
+                    sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                    err += 1
+                else:
+                    sys.stdout.write(char)
                 flag_exp = 0
                 flag_nbr = 1
                 flag_sign = 0
@@ -290,27 +307,47 @@ def err_syn(arg):
                 if(flag_sign == 1):
                     flag_sign = 0
                     flag_nbr = 0
+                    sys.stdout.write(char)
                 elif(flag_nbr == 1):
-                    return(6)
+                    sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                    err += 1
+                else:
+                    sys.stdout.write(char)
         elif(char == '='):
             if(flag_eq == 1 or flag_exp == 1):
-                print('XD')
-                return(7)
-            flag_can_frac = 1
-            flag_frac = 1
-            flag_x = 0
-            flag_nbr = 0
-            flag_eq = 1
+                sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err += 1
+            else:
+                flag_can_frac = 1
+                flag_frac = 1
+                flag_x = 0
+                flag_nbr = 0
+                flag_eq = 1
+                sys.stdout.write(char)
         elif(char == '.'):
             if(flag_frac == 1 or flag_mp == 1 or flag_can_frac == 0):
-                return(8)
-            flag_can_frac = 0
-            flag_frac = 1
-            flag_sign = 0
+                sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err += 1
+            else:
+                flag_can_frac = 0
+                flag_frac = 1
+                flag_sign = 0
+                sys.stdout.write(char)
         last_char = char
+        
     if (last_char == '=' or last_char == '+' or last_char == '-'):
-        return (9)
-    return(0)
+        err += 1
+        sys.stdout.write('\nInvalid end of polynom.\n')
+        return(err)
+    elif (err > 0):
+        sys.stdout.write('\nPlease fix the highlighted \u001b[31m' + str(err))
+        if (err == 1):
+            sys.stdout.write('\033[0m error.\n')
+        else:
+            sys.stdout.write('\033[0m errors.\n')
+    else:
+        sys.stdout.write('\n\u001b[32mYour input is valid.\033[0m\n')
+    return(err)
 
 
 #main entry
