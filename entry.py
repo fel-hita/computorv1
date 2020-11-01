@@ -152,7 +152,7 @@ def print_reduced(coeff):
             sys.stdout.write('\u001b[32;1m- ')
         if (abs(coeff[2]) != 1):
             sys.stdout.write('\u001b[32;1m' + str(abs(coeff[2])) + '\u001b[37;1m * \u001b[0m')
-        sys.stdout.write('\u001b[32;1m X^2 \u001b[0m')
+        sys.stdout.write('\u001b[32;1mX^2 \u001b[0m')
     if (coeff[1] != 0):
         if (coeff[1] < 0):
             sys.stdout.write('\u001b[35;1m- ')
@@ -181,12 +181,12 @@ def disc(coeff):
 
 #solve 1st degree
 def solve1(coeff):
-    res = -coeff[0]/coeff[1]
+    sol = -coeff[0]/coeff[1]
     if (coeff[1] != 0):
         print('\u001b[36m One solution : \033[0m')
-        if(res == 0):
-            res = 0.0
-        print('\u001b[31m X = ' + str(res) +'\033[0m')
+        if(sol == 0):
+            sol = 0.0
+        print('\u001b[31m X = ' + str(sol) +'\033[0m')
     return
 
 #solve 2nd degree
@@ -200,6 +200,8 @@ def solve2(coeff):
         print('a = ' + str(a) + ' b = ' + str(b))
         print('\u001b[36m One solution \u001b[33m-b/2a \033[0m:')
         sol = -coeff[1]/2*coeff[2]
+        if(sol == 0):
+            sol = 0.0
         print('\u001b[33m X = ' + str(sol) +'\033[0m')
     else:
         a = coeff[2]
@@ -342,6 +344,16 @@ def err_syn(arg):
         sys.stdout.write('\nYour input syntax is\u001b[32m valid.\033[0m\n')
     return(err)
 
+# final coeff handler
+def final_reduce(coeff):
+    flag = -1
+    for i in range(2,-1,-1):
+        if (coeff[i] > 0 and flag == -1):
+            return (coeff)
+        else:
+            coeff[i] = -coeff[i]
+        flag = 0
+    return (coeff)
 
 #main entry
 def entry(arg):
@@ -385,9 +397,11 @@ def entry(arg):
     sys.stdout.write('\u001b[36mCoefficient list for 2nd poly : \033[0m')
     print(coeff2)
     sys.stdout.write('\u001b[36mCoefficient reduced form : \033[0m')
+    final_coeff = final_reduce(final_coeff)
     print(final_coeff)
     sys.stdout.write('\u001b[36mPolynomial reduced form : \033[0m')
     print_reduced(final_coeff)
+    # print('final reduced form :' + str(final_reduce(final_coeff)))
     if (deg == 1):
         solve1(final_coeff)
     elif (deg == 2):
