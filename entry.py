@@ -9,9 +9,9 @@ if (len(sys.argv) != 2 or sys.argv[1].find('=') == -1):
     sys.exit()
 
 #printing arguments infos
-print ('Number of arguments:', len(sys.argv), 'arguments.')
-print ('Argument List:', str(sys.argv))
-print ('Argument 1:', str(sys.argv[1]))
+# print ('Number of arguments:', len(sys.argv), 'arguments.')
+# print ('Argument List:', str(sys.argv))
+# print ('Argument 1:', str(sys.argv[1]))
 
 #remove space and return the string
 def rmv_space(string): 
