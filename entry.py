@@ -136,9 +136,9 @@ def coeff_sub(coeff1,coeff2):
     elif (is_null(coeff1)):
         return (coeff2)
     final_coeff = [0,0,0]
-    final_coeff[0]-=coeff1[0] - coeff2[0]
-    final_coeff[1]-=coeff1[1] - coeff2[1]
-    final_coeff[2]-=coeff1[2] - coeff2[2]
+    final_coeff[0]=coeff1[0] - coeff2[0]
+    final_coeff[1]=coeff1[1] - coeff2[1]
+    final_coeff[2]=coeff1[2] - coeff2[2]
     return (final_coeff)
 
 #print reduced form
@@ -193,7 +193,7 @@ def solve1(coeff):
 def solve2(coeff):
     d = disc(coeff)
     if (d < 0):
-        print('\u001b[36mThe equation has no solution in R')
+        print('\u001b[36mThe equation has no solution in R.\033[0m')
     elif (d == 0):
         a = coeff[2]
         b = coeff[1]
@@ -221,6 +221,7 @@ def solve2(coeff):
 
 #error syntax
 def err_syn(arg):
+    err_list = []
     err = 0
     last_char = ''
     flag_can_frac = 1
@@ -241,6 +242,7 @@ def err_syn(arg):
         if(char == '+' or char == '-'):
             if(flag_sign == 1 or flag_exp == 1):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err_list.append(err_out(1))
                 err += 1
             else:
                 flag_can_frac = 1
@@ -253,6 +255,7 @@ def err_syn(arg):
         elif(char == '*'):
             if (flag_mp == 1 or flag_frac == 1):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err_list.append(err_out(2))
                 err += 1
             else:
                 flag_eq = 1
@@ -262,6 +265,7 @@ def err_syn(arg):
         elif(char == 'x'):
             if(flag_x == 1):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err_list.append(err_out(3))
                 err += 1
             else:
                 flag_eq = 0
@@ -274,6 +278,7 @@ def err_syn(arg):
         elif(char == '^'):
             if(flag_x == 0):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err_list.append(err_out(4))
                 err += 1
             else:
                 flag_eq = 0
@@ -287,6 +292,7 @@ def err_syn(arg):
             if(flag_exp == 1):
                 if(char != '0' and char != '1' and char != '2'):
                     sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                    err_list.append(err_out(5))
                     err += 1
                 else:
                     sys.stdout.write(char)
@@ -302,12 +308,14 @@ def err_syn(arg):
                     sys.stdout.write(char)
                 elif(flag_nbr == 1):
                     sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                    err_list.append(err_out(6))
                     err += 1
                 else:
                     sys.stdout.write(char)
         elif(char == '='):
             if(flag_eq == 1 or flag_exp == 1):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err_list.append(err_out(7))
                 err += 1
             else:
                 flag_can_frac = 1
@@ -319,6 +327,7 @@ def err_syn(arg):
         elif(char == '.'):
             if(flag_frac == 1 or flag_mp == 1 or flag_can_frac == 0):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err_list.append(err_out(8))
                 err += 1
             else:
                 flag_can_frac = 0
@@ -327,6 +336,7 @@ def err_syn(arg):
                 sys.stdout.write(char)
         else:
             sys.stdout.write('\u001b[31m' + char + '\033[0m')
+            err_list.append(err_out(9))
             err += 1
         last_char = char
         
@@ -335,11 +345,12 @@ def err_syn(arg):
             err += 1
         sys.stdout.write('\nInvalid \u001b[31mend\033[0m of polynom.\n')
     if (err > 0):
-        sys.stdout.write('\nPlease fix the highlighted \u001b[31m' + str(err))
+        sys.stdout.write('\nPlease fix the highlighted \u001b[31m')
         if (err == 1):
-            sys.stdout.write('\033[0m error.\n')
+            sys.stdout.write('\033[0merror.\u001b[31m\n')
         else:
-            sys.stdout.write('\033[0m errors.\n')
+            sys.stdout.write(str(err) + '\033[0m errors.\u001b[31m\n')
+        print(*err_list, sep='\033[0m, \u001b[31m')
     else:
         sys.stdout.write('\nYour input syntax is\u001b[32m valid.\033[0m\n')
     return(err)
@@ -354,6 +365,26 @@ def final_reduce(coeff):
             coeff[i] = -coeff[i]
         flag = 0
     return (coeff)
+
+#error output handler
+def err_out(err_nb):
+    if (err_nb == 1):
+        return ('Sign')
+    elif (err_nb == 2):
+        return ('Multiplication')
+    elif (err_nb == 3):
+        return ('Inderterminant')
+    elif (err_nb == 4):
+        return ('Exponent')
+    elif (err_nb == 5):
+        return ('Exponent power')
+    elif (err_nb == 6):
+        return ('Numerical')
+    elif (err_nb == 7):
+        return ('Equal sign')
+    elif (err_nb == 8):
+        return ('Fraction')
+    return ('Error.')
 
 #main entry
 def entry(arg):
@@ -397,11 +428,10 @@ def entry(arg):
     sys.stdout.write('\u001b[36mCoefficient list for 2nd poly : \033[0m')
     print(coeff2)
     sys.stdout.write('\u001b[36mCoefficient reduced form : \033[0m')
-    final_coeff = final_reduce(final_coeff)
     print(final_coeff)
     sys.stdout.write('\u001b[36mPolynomial reduced form : \033[0m')
+    final_coeff = final_reduce(final_coeff)
     print_reduced(final_coeff)
-    # print('final reduced form :' + str(final_reduce(final_coeff)))
     if (deg == 1):
         solve1(final_coeff)
     elif (deg == 2):
