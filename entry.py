@@ -183,6 +183,9 @@ def disc(coeff):
 def solve1(coeff):
     sol = -coeff[0]/coeff[1]
     if (coeff[1] != 0):
+        b = coeff[1]
+        c = coeff[0]
+        print('\u001b[35;1mb = \033[0m' + str(b) + '\u001b[34;1m c = \033[0m' + str(c))
         print('\u001b[36m One solution : \033[0m')
         if(sol == 0):
             sol = 0.0
@@ -197,7 +200,7 @@ def solve2(coeff):
     elif (d == 0):
         a = coeff[2]
         b = coeff[1]
-        print('a = ' + str(a) + ' b = ' + str(b))
+        print('\u001b[32;1ma = \033[0m' + str(a) + '\u001b[35;1m b = \033[0m' + str(b))
         print('\u001b[36m One solution \u001b[33m-b/2a \033[0m:')
         sol = -coeff[1]/2*coeff[2]
         if(sol == 0):
@@ -207,7 +210,7 @@ def solve2(coeff):
         a = coeff[2]
         b = coeff[1]
         c = coeff[0]
-        print('a = ' + str(a) + ' b = ' + str(b) + ' c = ' + str(c))
+        print('\u001b[32;1ma = \033[0m' + str(a) + '\u001b[35;1m b = \033[0m' + str(b) + '\u001b[34;1m c = \033[0m' + str(c))
         discr = my_pow2(b)-4*a*c
         print('\u001b[36m Two solutions \u001b[33mX1\033[0m,\u001b[31mX2 \033[0m: ')
         temp1=-b+my_sqrt(discr)
@@ -276,7 +279,11 @@ def err_syn(arg):
                 flag_frac = 1
                 sys.stdout.write(char)
         elif(char == '^'):
-            if(flag_x == 0):
+            if(flag_exp == 1):
+                sys.stdout.write('\u001b[31m' + char + '\033[0m')
+                err_list.append(err_out(4))
+                err += 1
+            elif(flag_x == 0):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
                 err_list.append(err_out(4))
                 err += 1
@@ -340,7 +347,7 @@ def err_syn(arg):
             err += 1
         last_char = char
         
-    if (last_char == '=' or last_char == '+' or last_char == '-'):
+    if (last_char == '=' or last_char == '+' or last_char == '-' or last_char == '^'):
         if (err == 0):
             err += 1
         sys.stdout.write('\nInvalid \u001b[31mend\033[0m of polynom.\n')
@@ -377,7 +384,7 @@ def err_out(err_nb):
     elif (err_nb == 4):
         return ('Exponent')
     elif (err_nb == 5):
-        return ('Exponent power')
+        return ('Exponent power ([0,2])')
     elif (err_nb == 6):
         return ('Numerical')
     elif (err_nb == 7):
@@ -390,26 +397,13 @@ def err_out(err_nb):
 def entry(arg):
     err = err_syn(rmv_space(arg).lower())
     if(err != 0):
-        #print('\u001b[36m\nInvalid syntax - Error Nº: \u001b[31m' + str(err) + '\033[0m')
         return
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
     coeff1 = get_coeff_list(p1)
     coeff2 = get_coeff_list(p2)
-    # print('coeff1')
-    # print(coeff1)
-    # print('coeff2')
-    # print(coeff2)
     final_coeff = coeff_sub(coeff1,coeff2)
-    # print('final coeff')
-    # print(final_coeff)
     deg = get_max_deg(final_coeff)
-    # print('deg')
-    # print(deg)
-    # print('p1')
-    # print(p1)
-    # print('p2')
-    # print(p2)
     if (coeff1 == coeff2):
         print('\u001b[36mAll the real numbers are solution\033[0m')
         return
