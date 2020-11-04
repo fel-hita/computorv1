@@ -2,7 +2,6 @@
 
 import sys
 import re
-import math
 import array as arr
 
 if (len(sys.argv) != 2 or sys.argv[1].find('=') == -1):
