@@ -371,7 +371,7 @@ def err_out(err_nb):
 
 def main(arg):
     err = err_syn(arg.lower())
-    if(err != 0):
+    if (err != 0):
         return
     p1 = rmv_space(arg.split('=')[0]).lower()
     p2 = rmv_space(arg.split('=')[1]).lower()
