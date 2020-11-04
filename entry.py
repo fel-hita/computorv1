@@ -1,19 +1,14 @@
+#!/usr/bin/python3.9
+
 import sys
 import re
 import math
 import array as arr
 
-#exit if number of inline arguments is different than 1, or the polynomial expression does not contain a "="
 if (len(sys.argv) != 2 or sys.argv[1].find('=') == -1):
     print('Please write down a valid and only one polynomial argument.')
     sys.exit()
 
-#printing arguments infos
-# print ('Number of arguments:', len(sys.argv), 'arguments.')
-# print ('Argument List:', str(sys.argv))
-# print ('Argument 1:', str(sys.argv[1]))
-
-#remove space and return the string
 def rmv_space(string): 
     return string.replace(" ", "")
 
@@ -39,7 +34,7 @@ def my_sqrt(n):
         if my_abs(val - last) < 1e-9:
             break
     if sgn < 0:
-        return complex(0, val)
+        return -val
     return val
 
 def my_abs(nbr):
@@ -51,8 +46,7 @@ def my_abs(nbr):
 
 def my_pow2(nbr):
     return (nbr*nbr)
-
-#get the polynomial degree      
+      
 def get_max_deg(coeff):
     if (coeff[0] == 0 and coeff[1] == 0 and coeff[2] == 0):
         return (-1)
@@ -63,19 +57,16 @@ def get_max_deg(coeff):
     else:
         return (0)
 
-#check if string contain float
 def is_float(term):
     if (term.find('.') == -1):
         return False
     return True
 
-#convert string to number
 def to_number(term):
     if(is_float(term)):
         return float(term)
     return int(term)
 
-#return coeff from term
 def get_coeff(term,flag):
     if (term[0] == 'x'):
         if(flag == 1):
@@ -93,12 +84,9 @@ def get_coeff(term,flag):
             return(-temp)
     return temp
 
-#expression to list of coefficients
 def get_coeff_list(exp):
     coeff_list = [0, 0, 0]
     arr = re.split('(\+|-)',exp)
-    # print('list of terms : ')
-    # print(arr)
     flag = 0
     for term in arr:
         if (term == ''):
@@ -120,14 +108,12 @@ def get_coeff_list(exp):
                 coeff_list[0] += get_coeff(term,flag)
     return coeff_list
 
-#check if list is null
 def is_null(coeffs):
     for elem in coeffs:
         if (elem != 0):
             return 0
     return 1
 
-#coeff lists substraction
 def coeff_sub(coeff1,coeff2):
     if (is_null(coeff1) and is_null(coeff2)):
         return ([0,0,0])
@@ -136,12 +122,11 @@ def coeff_sub(coeff1,coeff2):
     elif (is_null(coeff1)):
         return (coeff2)
     final_coeff = [0,0,0]
-    final_coeff[0]=coeff1[0] - coeff2[0]
-    final_coeff[1]=coeff1[1] - coeff2[1]
-    final_coeff[2]=coeff1[2] - coeff2[2]
+    final_coeff[0] = coeff1[0] - coeff2[0]
+    final_coeff[1] = coeff1[1] - coeff2[1]
+    final_coeff[2] = coeff1[2] - coeff2[2]
     return (final_coeff)
 
-#print reduced form
 def print_reduced(coeff):
     if (is_null(coeff)):
         sys.stdout.write('\u001b[36mll the real numbers are solution\n')
@@ -174,12 +159,10 @@ def print_reduced(coeff):
     sys.stdout.write('\n')
     return
 
-#calculate discriminant
 def disc(coeff):
     print('\u001b[36mDiscriminant Δ = \033[0m' + str(my_pow2(coeff[1])-4*coeff[2]*coeff[0]))
     return (my_pow2(coeff[1])-4*coeff[2]*coeff[0])
 
-#solve 1st degree
 def solve1(coeff):
     sol = -coeff[0]/coeff[1]
     if (coeff[1] != 0):
@@ -192,7 +175,6 @@ def solve1(coeff):
         print('\u001b[31m X = ' + str(sol) +'\033[0m')
     return
 
-#solve 2nd degree
 def solve2(coeff):
     d = disc(coeff)
     if (d < 0):
@@ -222,7 +204,6 @@ def solve2(coeff):
         print('\u001b[31m X2 = ' + str(sol) +'\033[0m')
     return
 
-#error syntax
 def err_syn(arg):
     err_list = []
     err = 0
@@ -238,10 +219,6 @@ def err_syn(arg):
 
     sys.stdout.write('\nInput : ')
     for char in arg:
-    #sys.stdout.write(char)
-    # if (char.isnumeric() == False and flag_frac == 0):
-    #     sys.stdout.write('at:'+char)
-    #     return (88)
         if(char == '+' or char == '-'):
             if(flag_sign == 1 or flag_exp == 1):
                 sys.stdout.write('\u001b[31m' + char + '\033[0m')
@@ -364,7 +341,6 @@ def err_syn(arg):
         sys.stdout.write('\nYour input syntax is\u001b[32m valid.\033[0m\n')
     return(err)
 
-# final coeff handler
 def final_reduce(coeff):
     flag = -1
     for i in range(2,-1,-1):
@@ -375,7 +351,6 @@ def final_reduce(coeff):
         flag = 0
     return (coeff)
 
-#error output handler
 def err_out(err_nb):
     if (err_nb == 1):
         return ('Sign')
@@ -395,8 +370,7 @@ def err_out(err_nb):
         return ('Fraction')
     return ('Error.')
 
-#main entry
-def entry(arg):
+def main(arg):
     err = err_syn(arg.lower())
     if(err != 0):
         return
@@ -419,11 +393,11 @@ def entry(arg):
         print('\u001b[36mThe polynom is linear\033[0m')
     elif (deg == 2):
         print('\u001b[36mThe polynom is quadratic\033[0m')
-    sys.stdout.write('\u001b[36mCoefficient list for 1st poly : \033[0m')
+    sys.stdout.write('\u001b[36mAcquiring coefficient list for 1st poly : \033[0m')
     print(coeff1)
-    sys.stdout.write('\u001b[36mCoefficient list for 2nd poly : \033[0m')
+    sys.stdout.write('\u001b[36mAcquiring coefficient list for 2nd poly : \033[0m')
     print(coeff2)
-    sys.stdout.write('\u001b[36mCoefficient reduced form : \033[0m')
+    sys.stdout.write('\u001b[36mFinal polynomial coefficient reduced list : \033[0m')
     print(final_coeff)
     sys.stdout.write('\u001b[36mPolynomial reduced form : \033[0m')
     final_coeff = final_reduce(final_coeff)
@@ -434,5 +408,6 @@ def entry(arg):
         solve2(final_coeff)
     return
 
-
-entry(sys.argv[1])
+   
+if __name__ == "__main__":
+    main(sys.argv[1])
