@@ -169,7 +169,7 @@ def solve1(coeff):
         c = coeff[0]
         print('\u001b[35;1mb = \033[0m' + str(b) + '\u001b[34;1m c = \033[0m' + str(c))
         print('\u001b[36m One solution : \033[0m')
-        if(sol == 0):
+        if (sol == 0):
             sol = 0.0
         print('\u001b[31m X = ' + str(sol) +'\033[0m')
     return
