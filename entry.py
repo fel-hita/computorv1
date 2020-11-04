@@ -323,6 +323,8 @@ def err_syn(arg):
                 flag_frac = 1
                 flag_sign = 0
                 sys.stdout.write(char)
+        elif(char == ' '):
+            continue
         else:
             sys.stdout.write('\u001b[31m' + char + '\033[0m')
             err += 1
@@ -345,7 +347,7 @@ def err_syn(arg):
 
 #main entry
 def entry(arg):
-    err = err_syn(rmv_space(arg).lower())
+    err = err_syn(arg.lower())
     if(err != 0):
         #print('\u001b[36m\nInvalid syntax - Error Nº: \u001b[31m' + str(err) + '\033[0m')
         return
