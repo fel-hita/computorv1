@@ -283,17 +283,18 @@ def err_syn(arg):
                 flag_nbr = 1
                 flag_sign = 0
             else:
-                flag_frac = 0
                 flag_mp = 0
                 if(flag_sign == 1):
                     flag_sign = 0
                     flag_nbr = 0
+                    flag_frac = 0
                     sys.stdout.write(char)
                 elif(flag_nbr == 1):
                     sys.stdout.write('\u001b[31m' + char + '\033[0m')
                     err_list.append(err_out(6))
                     err += 1
                 else:
+                    flag_frac = 0
                     sys.stdout.write(char)
         elif(char == '='):
             if(flag_eq == 1 or flag_exp == 1):
