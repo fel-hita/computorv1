@@ -36,6 +36,9 @@ def my_sqrt(n):
         return -val
     return val
 
+def my_comp(disc):
+    return complex(my_sqrt(-disc),1)
+
 def my_abs(nbr):
     if (nbr == 0):
         return (0)
@@ -177,7 +180,21 @@ def solve1(coeff):
 def solve2(coeff):
     d = disc(coeff)
     if (d < 0):
-        print('\u001b[36mThe equation has no solution in R.\033[0m')
+        a = coeff[2]
+        b = coeff[1]
+        c = coeff[0]
+        print('\u001b[32;1ma = \033[0m' + str(a) + '\u001b[35;1m b = \033[0m' + str(b) + '\u001b[34;1m c = \033[0m' + str(c))
+        discr = my_pow2(b)-4*a*c
+        print('\u001b[36m Two complex solutions \u001b[33mX1\033[0m,\u001b[31mX2 \033[0m: ')
+        temp1=-b+complex(my_sqrt(-d)/2,1)
+        temp2=2*a
+        sol=temp1/temp2
+        print('\u001b[33m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(d) + ' / ' + str(temp2) + ') * i''\033[0m')
+        print('\u001b[33m X1 = ' + str(sol))
+        temp1=-b-complex(my_sqrt(-d)/2,1)
+        sol=temp1/temp2
+        print('\u001b[31m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(-d) + ' / ' + str(temp2) + ') * i''\033[0m')
+        print('\u001b[31m X1 = ' + str(sol))
     elif (d == 0):
         a = coeff[2]
         b = coeff[1]
@@ -341,16 +358,6 @@ def err_syn(arg):
         sys.stdout.write('\nYour input syntax is\u001b[32m valid.\033[0m\n')
     return(err)
 
-def final_reduce(coeff):
-    flag = -1
-    for i in range(2,-1,-1):
-        if (coeff[i] > 0 and flag == -1):
-            return (coeff)
-        else:
-            coeff[i] = -coeff[i]
-        flag = 0
-    return (coeff)
-
 def err_out(err_nb):
     if (err_nb == 1):
         return ('Sign')
@@ -400,7 +407,6 @@ def main(arg):
     sys.stdout.write('\u001b[36mFinal polynomial coefficient reduced list : \033[0m')
     print(final_coeff)
     sys.stdout.write('\u001b[36mPolynomial reduced form : \033[0m')
-    final_coeff = final_reduce(final_coeff)
     print_reduced(final_coeff)
     if (deg == 1):
         solve1(final_coeff)
