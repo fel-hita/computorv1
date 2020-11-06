@@ -189,11 +189,11 @@ def solve2(coeff):
         temp1=-b+complex(my_sqrt(-d)/2,1)
         temp2=2*a
         sol=temp1/temp2
-        print('\u001b[33m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(d) + ' / ' + str(temp2) + ') * i''\033[0m')
+        print('\u001b[33m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(d) + ' / ' + str(temp2) + ') * j''\033[0m')
         print('\u001b[33m X1 = ' + str(sol))
         temp1=-b-complex(my_sqrt(-d)/2,1)
         sol=temp1/temp2
-        print('\u001b[31m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(-d) + ' / ' + str(temp2) + ') * i''\033[0m')
+        print('\u001b[31m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(-d) + ' / ' + str(temp2) + ') * j''\033[0m')
         print('\u001b[31m X1 = ' + str(sol))
     elif (d == 0):
         a = coeff[2]
