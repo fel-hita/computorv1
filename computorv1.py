@@ -186,15 +186,15 @@ def solve2(coeff):
         print('\u001b[32;1ma = \033[0m' + str(a) + '\u001b[35;1m b = \033[0m' + str(b) + '\u001b[34;1m c = \033[0m' + str(c))
         discr = my_pow2(b)-4*a*c
         print('\u001b[36m Two complex solutions \u001b[33mX1\033[0m,\u001b[31mX2 \033[0m: ')
-        temp1=-b+complex(my_sqrt(-d)/2,1)
-        temp2=2*a
-        sol=temp1/temp2
-        print('\u001b[33m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(d) + ' / ' + str(temp2) + ') * j''\033[0m')
+        temp1 = complex(0,my_sqrt(my_abs(d)))
+        temp2 = 2 * a
+        sol=(-b+temp1)/temp2
+        print('\u001b[33m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(my_abs(d)) + ' / ' + str(temp2) + ') * j''\033[0m')
         print('\u001b[33m X1 = ' + str(sol))
-        temp1=-b-complex(my_sqrt(-d)/2,1)
-        sol=temp1/temp2
-        print('\u001b[31m X1 = (' + str(-b) + ' / ' + str(temp2) + ') + (√' + str(-d) + ' / ' + str(temp2) + ') * j''\033[0m')
-        print('\u001b[31m X1 = ' + str(sol))
+        temp1 = complex(0,my_sqrt(my_abs(d)))
+        sol=(-b-temp1)/temp2
+        print('\u001b[31m X2 = (' + str(-b) + ' / ' + str(temp2) + ') - (√' + str(my_abs(d)) + ' / ' + str(temp2) + ') * j''\033[0m')
+        print('\u001b[31m X2 = ' + str(sol))
     elif (d == 0):
         a = coeff[2]
         b = coeff[1]
